@@ -13,7 +13,7 @@ export const DetailPage = () => {
     return <div>Loading .....</div>;
   }
 
-  if (countryQuery.error) {
+  if (countryQuery.isError) {
     return <div>An error occured loading Data</div>;
   }
 

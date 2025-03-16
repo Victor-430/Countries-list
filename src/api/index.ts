@@ -18,8 +18,9 @@ export const getCountriesData = async (limit: number = 10) => {
 
     return data;
   } catch (err) {
-    if (err instanceof Error) return err;
-    console.error(err);
+    if (err instanceof Error) {
+      console.error("Error searching countries", err);
+    }
     throw err;
   }
 };
@@ -38,8 +39,9 @@ export const getCountryByName = async (name: string) => {
 
     return data[0];
   } catch (err) {
-    if (err instanceof Error) return err;
-    console.error(err);
+    if (err instanceof Error) {
+      console.error("Error searching countries", err);
+    }
     throw err;
   }
 };
@@ -60,8 +62,9 @@ export const filterByRegion = async (region: string) => {
 
     return data;
   } catch (err) {
-    if (err instanceof Error) return err;
-    console.error(err);
+    if (err instanceof Error) {
+      console.error("Error searching countries", err);
+    }
     throw err;
   }
 };

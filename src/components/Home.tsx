@@ -26,15 +26,6 @@ export const Home = () => {
 
   const isfetching = useIsFetching();
 
-  // handle which countries to display based on active queries
-  // useEffect(() => {
-  //   if (selectedRegion && regionFilterQuery.data) {
-  //     setSelectedRegion(regionFilterQuery.data);
-  //   }else(allCountriesQuery.data){
-  //     setDisplayedCountries(allCountriesQuery.data);
-  //   }
-  // }, [selectedRegion,regionFilterQuery.data, allCountriesQuery.data]);
-
   useEffect(() => {
     if (search && searchQuery.data) {
       setDisplayedCountries(searchQuery.data);
