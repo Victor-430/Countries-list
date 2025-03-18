@@ -72,3 +72,10 @@ export interface DropdownProps {
   defaultText: string;
   onSelect: (option: string) => void;
 }
+
+export type Theme = "light" | "dark";
+
+export interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}

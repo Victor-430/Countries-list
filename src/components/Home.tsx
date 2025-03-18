@@ -9,8 +9,9 @@ import {
 import { Countries } from "../pages/Countries";
 import { useEffect, useState } from "react";
 import { CountryType } from "../Types";
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "../utils/Dropdown";
 import { SearchQuery } from "./SearchQuery";
+import { useDebounce } from "use-debounce";
 
 export const Home = () => {
   const [displayedCountries, setDisplayedCountries] = useState<CountryType[]>(
@@ -18,24 +19,41 @@ export const Home = () => {
   );
   const [selectedRegion, setSelectedRegion] = useState("");
   const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
 
   // fecth data based on user interaction
   const allCountriesQuery = useAllCountries();
   const regionFilterQuery = useFilterByRegion(selectedRegion);
-  const searchQuery = useSearchCountries(search);
+  const searchQuery = useSearchCountries(debouncedSearch);
 
   const isfetching = useIsFetching();
 
   useEffect(() => {
-    if (search && searchQuery.data) {
-      setDisplayedCountries(searchQuery.data);
+    if (debouncedSearch && searchQuery.data) {
+      // Sort results to prioritize exact matches
+      const sortedResults = [...searchQuery.data].sort((a, b) => {
+        // Exact match first
+        if (a.name.toLowerCase() === debouncedSearch.toLowerCase()) return -1;
+        if (b.name.toLowerCase() === debouncedSearch.toLowerCase()) return 1;
+
+        // Then starts with
+        if (a.name.toLowerCase().startsWith(debouncedSearch.toLowerCase()))
+          return -1;
+        if (b.name.toLowerCase().startsWith(debouncedSearch.toLowerCase()))
+          return 1;
+
+        // Alphabetical order for the rest
+        return a.name.localeCompare(b.name);
+      });
+
+      setDisplayedCountries(sortedResults);
     } else if (selectedRegion && regionFilterQuery.data) {
       setDisplayedCountries(regionFilterQuery.data);
     } else if (allCountriesQuery.data) {
       setDisplayedCountries(allCountriesQuery.data);
     }
   }, [
-    search,
+    debouncedSearch,
     selectedRegion,
     searchQuery.data,
     regionFilterQuery.data,
@@ -45,7 +63,7 @@ export const Home = () => {
   const isLoading =
     allCountriesQuery.isPending ||
     (selectedRegion && regionFilterQuery.isPending) ||
-    (search && searchQuery.isPending);
+    (debouncedSearch && searchQuery.isPending);
 
   if (isLoading) {
     return <div>Loading ......</div>;
@@ -55,24 +73,32 @@ export const Home = () => {
     return <div>An error occured fetching data</div>;
   }
 
+  // if (!debouncedSearch) {
+  //   return (
+  //     <div className="z-99 absolute left-0 right-0 top-0 bg-yellow-300 text-white">
+  //       Search not found
+  //     </div>
+  //   );
+  // }
+
   // region options for dropdown
   const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    console.log(search);
-  };
 
   const handleRegionSelect = (region: string) => {
     setSelectedRegion(region);
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+  };
+
   return (
     <div className="">
-      <div className="absolute left-0 right-0 top-0 bg-slate-500 p-6 font-bold tracking-wide text-white">
+      {/* <div className="absolute left-0 right-0 top-0 bg-slate-500 p-6 font-bold tracking-wide text-white">
         <p>Query Function status: {allCountriesQuery.fetchStatus}</p>
         <p>Global fetching: {isfetching ? "fetching" : "idle"}</p>
-      </div>
+      </div> */}
 
       <div className="m-6 mb-12 flex flex-col gap-10">
         <SearchQuery search={search} handleSearch={handleSearch} />

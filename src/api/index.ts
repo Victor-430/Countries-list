@@ -73,7 +73,7 @@ export const filterByRegion = async (region: string) => {
 export const searchCountries = async (searchName: string) => {
   try {
     const res = await fetch(
-      `${endpoints}?name_likes=${encodeURIComponent(searchName)}`,
+      `${endpoints}?name_like=${encodeURIComponent(searchName)}`,
     );
     if (!res.ok) {
       throw new Error("An error occured searching countries");
