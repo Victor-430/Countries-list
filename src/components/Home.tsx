@@ -1,4 +1,4 @@
-import { useIsFetching } from "@tanstack/react-query";
+// import { useIsFetching } from "@tanstack/react-query";
 
 import {
   useAllCountries,
@@ -26,7 +26,7 @@ export const Home = () => {
   const regionFilterQuery = useFilterByRegion(selectedRegion);
   const searchQuery = useSearchCountries(debouncedSearch);
 
-  const isfetching = useIsFetching();
+  // const isfetching = useIsFetching();
 
   useEffect(() => {
     if (debouncedSearch && searchQuery.data) {
