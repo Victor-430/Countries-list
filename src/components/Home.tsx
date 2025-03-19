@@ -23,7 +23,6 @@ export const Home = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 1000);
   const [searchNotFound, setSearchNotFound] = useState(false);
-  const countriesRef = useRef<HTMLDivElement>(null);
 
   // fecth data based on user interaction
   const allCountriesQuery = useAllCountries();
@@ -74,16 +73,6 @@ export const Home = () => {
     allCountriesQuery.data,
   ]);
 
-  //Animate slide-in when results change
-  if (countriesRef.current) {
-    countriesRef.current.classList.add("animate-slide-in");
-    setTimeout(() => {
-      if (countriesRef.current) {
-        countriesRef.current.classList.remove("animate-slide-in");
-      }
-    }, 500);
-  }
-
   const isLoading =
     allCountriesQuery.isPending ||
     (selectedRegion && regionFilterQuery.isPending) ||
@@ -96,7 +85,6 @@ export const Home = () => {
   if (allCountriesQuery.isError) {
     return <Error />;
   }
-
 
   // region options for dropdown
   const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
@@ -116,10 +104,10 @@ export const Home = () => {
       {/* <div className="absolute left-0 right-0 top-0 bg-slate-500 p-6 font-bold tracking-wide text-white">
         <p>Query Function status: {allCountriesQuery.fetchStatus}</p>
         <p>Global fetching: {isfetching ? "fetching" : "idle"}</p>
-      </div> */}
+      </div>  */}
 
       {searchNotFound && (
-        <div className="animate-slide-down fixed bottom-0 left-0 top-0 z-50 bg-red-500 p-4 text-white">
+        <div className="fixed bottom-0 left-0 top-0 z-50 animate-slide-down bg-red-500 p-4 text-white">
           No countries found matching "{debouncedSearch}"
         </div>
       )}
@@ -136,10 +124,7 @@ export const Home = () => {
         </div>
       </div>
 
-      <div
-        ref={countriesRef}
-        className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-      >
+      <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {displayedCountries?.map((country) => (
           <Countries key={country.name} country={country} />
         ))}
