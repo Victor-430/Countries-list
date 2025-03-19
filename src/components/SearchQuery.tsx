@@ -1,9 +1,19 @@
+import { useEffect, useRef } from "react";
+
 type SearchQueryProps = {
   search: string;
   handleSearch: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
 
 export const SearchQuery = ({ search, handleSearch }: SearchQueryProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className="relative space-x-4">
       <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
@@ -24,6 +34,7 @@ export const SearchQuery = ({ search, handleSearch }: SearchQueryProps) => {
         </svg>
       </div>
       <input
+        ref={inputRef}
         className="h-16 w-full p-6 shadow-lg"
         placeholder="Search for a country"
         type="text"

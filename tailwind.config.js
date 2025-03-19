@@ -13,6 +13,20 @@ export default {
       textColor: {
         LightModeText: "hsl(200, 15%, 8%)",
       },
+      animation: {
+        "slide-in": "slideIn 0.5s ease-out",
+        "slide-down": "slideDown 0.3s ease-out forwards",
+      },
+      keyframes: {
+        slideIn: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideDown: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+      },
     },
   },
   plugins: [],

@@ -8,6 +8,7 @@ export const ThemeToggle = () => {
       <button
         onClick={toggleTheme}
         className="light:bg-LightModeBg light:text-LightModeText transition-all duration-300 hover:scale-110 hover:transform dark:bg-DarkModeBg dark:text-white"
+        aria-label="Toogle Dark Mode"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

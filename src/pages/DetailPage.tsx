@@ -1,5 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useCountryByName } from "../api/queries";
+import { Error } from "../utils/Error";
+import { Loading } from "../utils/Loading";
 
 export const DetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,11 +12,11 @@ export const DetailPage = () => {
   console.log(countryQuery);
 
   if (countryQuery.isPending) {
-    return <div>Loading .....</div>;
+    return <Loading />;
   }
 
   if (countryQuery.isError) {
-    return <div>An error occured loading Data</div>;
+    return <Error />;
   }
 
   const handleNavigation = () => {

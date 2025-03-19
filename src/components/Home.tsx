@@ -7,11 +7,13 @@ import {
 } from "../api/queries";
 
 import { Countries } from "../pages/Countries";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CountryType } from "../Types";
 import { Dropdown } from "../utils/Dropdown";
 import { SearchQuery } from "./SearchQuery";
 import { useDebounce } from "use-debounce";
+import { Loading } from "../utils/Loading";
+import { Error } from "../utils/Error";
 
 export const Home = () => {
   const [displayedCountries, setDisplayedCountries] = useState<CountryType[]>(
@@ -19,7 +21,9 @@ export const Home = () => {
   );
   const [selectedRegion, setSelectedRegion] = useState("");
   const [search, setSearch] = useState("");
-  const [debouncedSearch] = useDebounce(search, 500);
+  const [debouncedSearch] = useDebounce(search, 1000);
+  const [searchNotFound, setSearchNotFound] = useState(false);
+  const countriesRef = useRef<HTMLDivElement>(null);
 
   // fecth data based on user interaction
   const allCountriesQuery = useAllCountries();
@@ -30,6 +34,9 @@ export const Home = () => {
 
   useEffect(() => {
     if (debouncedSearch && searchQuery.data) {
+      //reset search not found
+      setSearchNotFound(false);
+
       // Sort results to prioritize exact matches
       const sortedResults = [...searchQuery.data].sort((a, b) => {
         // Exact match first
@@ -46,10 +53,17 @@ export const Home = () => {
         return a.name.localeCompare(b.name);
       });
 
+      if (!sortedResults) {
+        console.log(sortedResults);
+        setSearchNotFound(true);
+      }
+
       setDisplayedCountries(sortedResults);
     } else if (selectedRegion && regionFilterQuery.data) {
+      setSearchNotFound(false);
       setDisplayedCountries(regionFilterQuery.data);
     } else if (allCountriesQuery.data) {
+      setSearchNotFound(false);
       setDisplayedCountries(allCountriesQuery.data);
     }
   }, [
@@ -60,31 +74,35 @@ export const Home = () => {
     allCountriesQuery.data,
   ]);
 
+  //Animate slide-in when results change
+  if (countriesRef.current) {
+    countriesRef.current.classList.add("animate-slide-in");
+    setTimeout(() => {
+      if (countriesRef.current) {
+        countriesRef.current.classList.remove("animate-slide-in");
+      }
+    }, 500);
+  }
+
   const isLoading =
     allCountriesQuery.isPending ||
     (selectedRegion && regionFilterQuery.isPending) ||
     (debouncedSearch && searchQuery.isPending);
 
   if (isLoading) {
-    return <div>Loading ......</div>;
+    return <Loading height="min-h-[300px]" />;
   }
 
   if (allCountriesQuery.isError) {
-    return <div>An error occured fetching data</div>;
+    return <Error />;
   }
 
-  // if (!debouncedSearch) {
-  //   return (
-  //     <div className="z-99 absolute left-0 right-0 top-0 bg-yellow-300 text-white">
-  //       Search not found
-  //     </div>
-  //   );
-  // }
 
   // region options for dropdown
   const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
 
   const handleRegionSelect = (region: string) => {
+    setSearch("");
     setSelectedRegion(region);
   };
 
@@ -100,6 +118,12 @@ export const Home = () => {
         <p>Global fetching: {isfetching ? "fetching" : "idle"}</p>
       </div> */}
 
+      {searchNotFound && (
+        <div className="animate-slide-down fixed bottom-0 left-0 top-0 z-50 bg-red-500 p-4 text-white">
+          No countries found matching "{debouncedSearch}"
+        </div>
+      )}
+
       <div className="m-6 mb-12 flex flex-col gap-10">
         <SearchQuery search={search} handleSearch={handleSearch} />
 
@@ -112,7 +136,10 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <div
+        ref={countriesRef}
+        className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+      >
         {displayedCountries?.map((country) => (
           <Countries key={country.name} country={country} />
         ))}
