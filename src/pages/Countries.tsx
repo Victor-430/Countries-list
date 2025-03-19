@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { CountryProps } from "../Types";
+import { useTheme } from "../CustomHooks/ThemeProvider";
 
 export const Countries = ({ country }: CountryProps) => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const handleNavigation = (name: string) => {
@@ -10,7 +12,9 @@ export const Countries = ({ country }: CountryProps) => {
 
   return (
     <div>
-      <div className="mx-auto mb-12 h-fit w-[80%] rounded-md bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:transform">
+      <div
+        className={`mx-auto mb-12 h-fit w-[80%] rounded-md bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:transform ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-LightModeBg text-LightModeText"}`}
+      >
         <div className="">
           <div
             className="cursor-pointer"

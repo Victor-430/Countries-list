@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTheme } from "../CustomHooks/ThemeProvider";
 
 type SearchQueryProps = {
   search: string;
@@ -6,6 +7,7 @@ type SearchQueryProps = {
 };
 
 export const SearchQuery = ({ search, handleSearch }: SearchQueryProps) => {
+  const { theme } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -15,8 +17,8 @@ export const SearchQuery = ({ search, handleSearch }: SearchQueryProps) => {
   }, []);
 
   return (
-    <div className="relative space-x-4">
-      <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
+    <div className="relative">
+      <div className="pointer-events-none absolute inset-y-0 left-12 flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -35,7 +37,7 @@ export const SearchQuery = ({ search, handleSearch }: SearchQueryProps) => {
       </div>
       <input
         ref={inputRef}
-        className="h-16 w-full p-6 shadow-lg"
+        className={`h-16 w-full p-6 pl-20 shadow-lg ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-LightModeBg text-LightModeText"}`}
         placeholder="Search for a country"
         type="text"
         value={search}

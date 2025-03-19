@@ -7,15 +7,17 @@ import {
 } from "../api/queries";
 
 import { Countries } from "../pages/Countries";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CountryType } from "../Types";
 import { Dropdown } from "../utils/Dropdown";
 import { SearchQuery } from "./SearchQuery";
 import { useDebounce } from "use-debounce";
 import { Loading } from "../utils/Loading";
 import { Error } from "../utils/Error";
+import { useTheme } from "../CustomHooks/ThemeProvider";
 
 export const Home = () => {
+  const { theme } = useTheme();
   const [displayedCountries, setDisplayedCountries] = useState<CountryType[]>(
     [],
   );
@@ -52,10 +54,8 @@ export const Home = () => {
         return a.name.localeCompare(b.name);
       });
 
-      if (!sortedResults) {
-        console.log(sortedResults);
-        setSearchNotFound(true);
-      }
+      // show search not found message if no results
+      setSearchNotFound(sortedResults.length === 0 && debouncedSearch !== "");
 
       setDisplayedCountries(sortedResults);
     } else if (selectedRegion && regionFilterQuery.data) {
@@ -100,14 +100,18 @@ export const Home = () => {
   };
 
   return (
-    <div className="">
+    <div
+      className={`transition-colors duration-300 ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-LightModeBg text-LightModeText"}`}
+    >
       {/* <div className="absolute left-0 right-0 top-0 bg-slate-500 p-6 font-bold tracking-wide text-white">
         <p>Query Function status: {allCountriesQuery.fetchStatus}</p>
         <p>Global fetching: {isfetching ? "fetching" : "idle"}</p>
       </div>  */}
 
       {searchNotFound && (
-        <div className="fixed bottom-0 left-0 top-0 z-50 animate-slide-down bg-red-500 p-4 text-white">
+        <div
+          className={`fixed left-0 right-0 top-0 z-50 animate-slide-down bg-red-500 p-4 text-white`}
+        >
           No countries found matching "{debouncedSearch}"
         </div>
       )}

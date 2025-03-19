@@ -7,13 +7,13 @@ export const ThemeToggle = () => {
     <div className="flex-col-1 flex items-center space-x-2">
       <button
         onClick={toggleTheme}
-        className="light:bg-LightModeBg light:text-LightModeText transition-all duration-300 hover:scale-110 hover:transform dark:bg-DarkModeBg dark:text-white"
+        className="transition-all duration-300 hover:scale-110 hover:transform"
         aria-label="Toogle Dark Mode"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="mr-2 h-5 w-5"
-          fill={theme === "light" ? "bg-yellow-400" : "bg-red-400"}
+          fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
@@ -25,7 +25,11 @@ export const ThemeToggle = () => {
           />
         </svg>
       </button>
-      <h2 className="text-lg font-semibold">Dark Mode</h2>
+      <h2
+        className={`text-lg font-semibold ${theme === "dark" ? "text-white" : ""}`}
+      >
+        Dark Mode
+      </h2>
     </div>
   );
 };

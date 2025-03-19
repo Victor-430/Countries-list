@@ -23,8 +23,11 @@ export const Dropdown = ({ options, defaultText, onSelect }: DropdownProps) => {
   }, []);
 
   const handleOptionClick = (option: string) => {
+    //update state
     setSelectedOption(option);
+
     onSelect(option);
+
     setIsOpen(false);
   };
 
