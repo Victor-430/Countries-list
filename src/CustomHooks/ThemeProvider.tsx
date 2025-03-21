@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Theme, ThemeContextType } from "../Types";
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -12,7 +18,7 @@ const getSavedTheme = () => {
     : "light";
 };
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(getSavedTheme());
 
   useEffect(() => {

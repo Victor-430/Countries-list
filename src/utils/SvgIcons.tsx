@@ -1,3 +1,5 @@
+import { Theme, ThemeContextType } from "../Types";
+
 export const XIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +36,7 @@ export const SearchIcon = () => (
   </svg>
 );
 
-export const DropdownIcon = ({ isOpen }) => (
+export const DropdownIcon = ({ isOpen }: { isOpen: boolean }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -51,7 +53,7 @@ export const DropdownIcon = ({ isOpen }) => (
   </svg>
 );
 
-export const MoonIcon = ({ theme }) => (
+export const MoonIcon = ({ theme }: Partial<ThemeContextType>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="mr-2 h-5 w-5"
