@@ -11,7 +11,7 @@ export const ThemeToggle = () => {
         className="transition-all duration-300 hover:scale-110 hover:transform"
         aria-label="Toogle Dark Mode"
       >
-        <MoonIcon />
+        <MoonIcon theme={theme} />
       </button>
       <h2
         className={`text-lg font-semibold ${theme === "dark" ? "text-white" : ""}`}
