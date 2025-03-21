@@ -2,14 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCountryByName } from "../api/queries";
 import { Error } from "../utils/Error";
 import { Loading } from "../utils/Loading";
+import { useTheme } from "../CustomHooks/ThemeProvider";
 
 export const DetailPage = () => {
+  const { theme } = useTheme();
   const { id } = useParams<{ id: string }>();
-  console.log(id);
+
   const navigate = useNavigate();
 
   const countryQuery = useCountryByName(id || "");
-  console.log(countryQuery);
 
   if (countryQuery.isPending) {
     return <Loading />;
@@ -29,7 +30,7 @@ export const DetailPage = () => {
     <div className="mx-8 lg:mx-16">
       <button
         onClick={handleNavigation}
-        className="lg:mb-18 mb-24 mt-12 flex items-center rounded-sm bg-white px-16 py-2.5 shadow-lg transition-transform duration-300 hover:scale-105 hover:transform lg:mt-16"
+        className={`mb-24 mt-12 flex items-center gap-x-2 rounded-sm px-8 py-2.5 shadow-lg transition-transform duration-300 hover:scale-105 hover:transform lg:mb-16 lg:mt-16 ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-white text-LightModeText"} `}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +62,7 @@ export const DetailPage = () => {
         <div className="space-y-8">
           <h1 className="text-3xl font-extrabold">{country?.name}</h1>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 md:gap-x-6 lg:gap-x-12">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:gap-x-12">
             <div className="space-y-3">
               <p>
                 <span className="mr-1 font-semibold">Native Name:</span>
@@ -102,11 +103,11 @@ export const DetailPage = () => {
 
             <div>
               <h1 className="mb-8 font-semibold">Border Countries:</h1>
-              <div className="grid grid-cols-3 gap-6 md:grid-cols-4">
+              <div className="flex flex-row flex-wrap gap-6">
                 {country.borders?.map((country) => (
                   <div
                     key={country}
-                    className="rounded-md px-8 py-2.5 shadow-md transition-transform duration-300 hover:scale-110 hover:transform"
+                    className={`rounded-md px-8 py-2.5 shadow-md transition-transform duration-300 hover:scale-110 hover:transform ${theme === "dark" ? "bg-DarkModeElements" : ""}`}
                   >
                     {country}
                   </div>

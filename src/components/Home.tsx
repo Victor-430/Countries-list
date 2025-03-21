@@ -1,5 +1,3 @@
-// import { useIsFetching } from "@tanstack/react-query";
-
 import {
   useAllCountries,
   useFilterByRegion,
@@ -27,11 +25,9 @@ export const Home = () => {
   const [searchNotFound, setSearchNotFound] = useState(false);
 
   // fecth data based on user interaction
-  const allCountriesQuery = useAllCountries();
+  const allCountriesQuery = useAllCountries(50);
   const regionFilterQuery = useFilterByRegion(selectedRegion);
   const searchQuery = useSearchCountries(debouncedSearch);
-
-  // const isfetching = useIsFetching();
 
   useEffect(() => {
     if (debouncedSearch && searchQuery.data) {
@@ -99,15 +95,14 @@ export const Home = () => {
     setSearch(value);
   };
 
+  const clearSearch = () => {
+    setSearch("");
+  };
+
   return (
     <div
-      className={`transition-colors duration-300 ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-LightModeBg text-LightModeText"}`}
+      className={`transition-colors duration-300 lg:mx-6 xl:mx-12 ${theme === "dark" ? "bg-DarkModeBg text-white" : "bg-LightModeBg text-LightModeText"}`}
     >
-      {/* <div className="absolute left-0 right-0 top-0 bg-slate-500 p-6 font-bold tracking-wide text-white">
-        <p>Query Function status: {allCountriesQuery.fetchStatus}</p>
-        <p>Global fetching: {isfetching ? "fetching" : "idle"}</p>
-      </div>  */}
-
       {searchNotFound && (
         <div
           className={`fixed left-0 right-0 top-0 z-50 animate-slide-down bg-red-500 p-4 text-white`}
@@ -116,10 +111,14 @@ export const Home = () => {
         </div>
       )}
 
-      <div className="m-6 mb-12 flex flex-col gap-10">
-        <SearchQuery search={search} handleSearch={handleSearch} />
+      <div className="mx-6 mb-12 mt-8 flex flex-col justify-between gap-10 lg:mx-8 lg:flex-row lg:gap-0">
+        <SearchQuery
+          search={search}
+          handleSearch={handleSearch}
+          clearSearch={clearSearch}
+        />
 
-        <div className="w-1/2 shadow-md">
+        <div className="w-1/2 shadow-md lg:w-1/5">
           <Dropdown
             options={regions}
             defaultText="Filter by Region"
@@ -128,7 +127,7 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 lg:mx-0 lg:grid-cols-3 xl:grid-cols-4">
         {displayedCountries?.map((country) => (
           <Countries key={country.name} country={country} />
         ))}

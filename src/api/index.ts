@@ -14,7 +14,6 @@ export const getCountriesData = async (limit: number = 10) => {
     }
 
     const data: CountryType[] = await res.json();
-    console.log(data);
 
     return data;
   } catch (err) {
@@ -35,7 +34,6 @@ export const getCountryByName = async (name: string) => {
     }
 
     const data: CountryType[] = await res.json();
-    console.log(data);
 
     return data[0];
   } catch (err) {
@@ -58,7 +56,6 @@ export const filterByRegion = async (region: string) => {
     }
 
     const data: CountryType[] = await res.json();
-    console.log(data);
 
     return data;
   } catch (err) {

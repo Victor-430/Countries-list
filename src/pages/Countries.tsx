@@ -13,7 +13,7 @@ export const Countries = ({ country }: CountryProps) => {
   return (
     <div>
       <div
-        className={`mx-auto mb-12 h-fit w-[80%] rounded-md bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:transform ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-LightModeBg text-LightModeText"}`}
+        className={`mx-auto mb-12 h-fit w-[80%] rounded-md shadow-md transition-transform duration-300 hover:scale-105 hover:transform ${theme === "dark" ? "bg-DarkModeElements text-white" : "bg-white text-LightModeText"}`}
       >
         <div className="">
           <div
@@ -23,6 +23,7 @@ export const Countries = ({ country }: CountryProps) => {
             <img
               className="h-52 w-full rounded-t-md bg-gray-200 object-cover"
               src={country?.flags.png || country?.flags.svg}
+              loading="lazy"
               alt={`Flag of ${country?.name}`}
             />
           </div>

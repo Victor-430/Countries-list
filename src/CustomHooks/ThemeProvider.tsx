@@ -24,7 +24,7 @@ export const ThemeProvider = ({ children }) => {
     //Add new theme class
     root.classList.add(theme);
 
-    //Apply background color based on theme
+    // Apply background color based on theme
     if (theme === "dark") {
       document.body.style.backgroundColor = "hsl(207, 26%, 17%)"; // DarkModeBg
       document.body.style.color = "white";
