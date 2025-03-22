@@ -1,4 +1,4 @@
-import { Theme, ThemeContextType } from "../Types";
+import { ThemeContextType } from "../Types";
 
 export const XIcon = () => (
   <svg

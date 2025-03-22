@@ -2,7 +2,6 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    darkMode: "class",
     extend: {
       backgroundColor: {
         LightModeBg: "hsl(0, 0%, 98%)",
