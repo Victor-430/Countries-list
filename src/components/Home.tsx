@@ -2,7 +2,7 @@ import {
   useAllCountries,
   useFilterByRegion,
   useSearchCountries,
-} from "../api/queries";
+} from "../services/queries";
 
 import { Countries } from "../pages/Countries";
 import { useEffect, useState } from "react";

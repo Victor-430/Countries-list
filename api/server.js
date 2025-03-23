@@ -6,10 +6,10 @@ import { fileURLToPath } from "url";
 
 // Convert ESM file path to dirname (since you're using "type": "module")
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(data);
+const __dirname = path.dirname(__filename);
 
 // Path to db.json
-const dbPath = path.resolve(__dirname, "data/db.json");
+const dbPath = path.resolve(__dirname, "../data/db.json");
 
 const server = jsonServer.create();
 const router = jsonServer.router(dbPath);
@@ -29,5 +29,6 @@ server.use(router);
 
 //  Vercel serverless function
 export default function handler(req, res) {
+  console.log("Received request:", req.method, req.url);
   return server(req, res);
 }

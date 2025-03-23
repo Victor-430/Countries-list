@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useCountryByName } from "../api/queries";
+import { useCountryByName } from "../services/queries";
 import { Error } from "../utils/Error";
 import { Loading } from "../utils/Loading";
 import { useTheme } from "../CustomHooks/ThemeProvider";
